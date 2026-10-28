@@ -1,0 +1,78 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "triggers": {
+    "Recurrence_Hourly_Check": {
+      "type": "Recurrence",
+      "recurrence": {
+        "frequency": "Hour",
+        "interval": 4
+      }
+    }
+  },
+  "actions": {
+    "Query_Pending_Approvals": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://enterprise.sharepoint.com/sites/FinanceHub",
+          "table": "FinanceRequests",
+          "$filter": "Status eq 'Pending Approval'"
+        }
+      }
+    },
+    "For_Each_Pending_Document": {
+      "type": "Foreach",
+      "foreach": "@body('Query_Pending_Approvals')?['value']",
+      "actions": {
+        "Check_If_Overdue": {
+          "type": "If",
+          "expression": {
+            "greater": [
+              "@utcNow()",
+              "@item()?['DueDate']"
+            ]
+          },
+          "actions": {
+            "Escalate_To_Finance_Director": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_teams",
+                  "operationId": "PostMessageToConversation",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_teams"
+                },
+                "parameters": {
+                  "recipient": "finance.director@enterprise.com",
+                  "messageBody": "🚨 SLA BREACH: Document @{item()?['RequestID']} is overdue! Assigned manager has not approved."
+                }
+              }
+            },
+            "Mark_Document_As_Overdue": {
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_sharepointonline",
+                  "operationId": "PatchItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+                },
+                "parameters": {
+                  "dataset": "https://enterprise.sharepoint.com/sites/FinanceHub",
+                  "table": "FinanceRequests",
+                  "id": "@item()?['ID']",
+                  "item/IsOverdue": true,
+                  "item/Status": "Escalated Overdue"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

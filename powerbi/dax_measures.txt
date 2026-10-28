@@ -1,0 +1,76 @@
+// ==============================================================================
+// ENTERPRISE POWER BI DAX MEASURES SPECIFICATION
+// Project: Finance Document Approval Automation & SLA Analytics
+// Candidate: Ahmad Fathin Naufal (UGM) - System Developer
+// ==============================================================================
+
+// 1. Total Document Requisitions Processed
+Total Documents = COUNTROWS('FinanceRequests')
+
+// 2. Approved Documents Count
+Approved Count = 
+CALCULATE(
+    COUNTROWS('FinanceRequests'),
+    'FinanceRequests'[Status] = "Approved"
+)
+
+// 3. Incomplete Submissions Count
+Incomplete Submissions = 
+CALCULATE(
+    COUNTROWS('FinanceRequests'),
+    'FinanceRequests'[IsIncomplete] = TRUE()
+)
+
+// 4. Incomplete Submission Rate (%)
+Incomplete Submission Rate % = 
+DIVIDE([Incomplete Submissions], [Total Documents], 0) * 100
+
+// 5. Overdue Approvals Count
+Overdue Approvals = 
+CALCULATE(
+    COUNTROWS('FinanceRequests'),
+    'FinanceRequests'[IsOverdue] = TRUE()
+)
+
+// 6. Overdue Rate (%)
+Overdue Approval Rate % = 
+DIVIDE([Overdue Approvals], [Total Documents], 0) * 100
+
+// 7. SLA Compliance Rate (%)
+SLA Compliance % = 
+100 - [Overdue Approval Rate %]
+
+// 8. Mean Time to Approve (MTTA in Hours)
+MTTA Hours = 
+AVERAGE('FinanceRequests'[TurnaroundHours])
+
+// 9. Total Financial Value Approved (IDR)
+Total Approved Value IDR = 
+CALCULATE(
+    SUM('FinanceRequests'[AmountIDR]),
+    'FinanceRequests'[Status] = "Approved"
+)
+
+// 10. Quantitative Incomplete Submission Reduction %
+// Baseline: 18.0% -> Automated: 6.0% => -66.7%
+Incomplete Error Reduction % = 
+VAR BaselineRate = 0.180
+VAR AutomatedRate = 
+    CALCULATE(
+        [Incomplete Submission Rate %] / 100,
+        'FinanceRequests'[SystemPhase] = "Power Automate Automated"
+    )
+RETURN
+    DIVIDE(AutomatedRate - BaselineRate, BaselineRate, 0) * 100
+
+// 11. Quantitative Overdue Approval Reduction %
+// Baseline: 34.0% -> Automated: 11.9% => -65.0%
+Overdue Reduction % = 
+VAR BaselineOverdue = 0.340
+VAR AutomatedOverdue = 
+    CALCULATE(
+        [Overdue Approval Rate %] / 100,
+        'FinanceRequests'[SystemPhase] = "Power Automate Automated"
+    )
+RETURN
+    DIVIDE(AutomatedOverdue - BaselineOverdue, BaselineOverdue, 0) * 100

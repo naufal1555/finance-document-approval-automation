@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="http://www.opengis.net/ows" Title="CostCenterBudget" Url="Lists/CostCenterBudget" BaseType="0">
+  <MetaData>
+    <Fields>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000041}" Type="Text" Name="CostCenterCode" DisplayName="Cost Center Code" Required="TRUE" Indexed="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000042}" Type="Text" Name="CostCenterName" DisplayName="Cost Center Name" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000043}" Type="Text" Name="DepartmentHead" DisplayName="Department Head" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000044}" Type="Currency" Name="AnnualBudgetIDR" DisplayName="Annual Budget (IDR)" Decimals="2" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000045}" Type="Currency" Name="CommittedSpendIDR" DisplayName="Committed Spend (IDR)" Decimals="2" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000046}" Type="Currency" Name="RemainingBudgetIDR" DisplayName="Remaining Budget (IDR)" Decimals="2" Required="TRUE" />
+    </Fields>
+  </MetaData>
+</List>

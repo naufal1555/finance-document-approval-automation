@@ -1,0 +1,134 @@
+{
+  "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "$connections": {
+      "defaultValue": {},
+      "type": "Object"
+    }
+  },
+  "triggers": {
+    "When_a_finance_document_is_submitted": {
+      "type": "OpenApiConnection",
+      "inputs": {
+        "host": {
+          "connectionName": "shared_sharepointonline",
+          "operationId": "GetOnNewItems",
+          "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+        },
+        "parameters": {
+          "dataset": "https://enterprise.sharepoint.com/sites/FinanceHub",
+          "table": "FinanceRequests"
+        }
+      },
+      "recurrence": {
+        "frequency": "Minute",
+        "interval": 1
+      }
+    }
+  },
+  "actions": {
+    "Validate_Mandatory_Fields": {
+      "type": "If",
+      "expression": {
+        "and": [
+          { "not": { "equals": [ "@triggerOutputs()?['body/CostCenterCode']", null ] } },
+          { "greater": [ "@triggerOutputs()?['body/AmountIDR']", 0 ] },
+          { "not": { "equals": [ "@triggerOutputs()?['body/Title']", "" ] } }
+        ]
+      },
+      "actions": {
+        "Evaluate_Approval_Tier": {
+          "type": "Switch",
+          "expression": "@triggerOutputs()?['body/ApprovalTier']",
+          "cases": {
+            "Tier_1_Department_Manager": {
+              "case": "Tier 1 (<= 5M)",
+              "actions": {
+                "Start_Department_Manager_Approval": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_approvals",
+                      "operationId": "CreateAnApproval",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+                    },
+                    "parameters": {
+                      "approvalType": "Basic",
+                      "title": "Approval Request: @{triggerOutputs()?['body/Title']} [Tier 1]",
+                      "assignedTo": "@{triggerOutputs()?['body/DepartmentHeadEmail']}",
+                      "details": "Document ID: @{triggerOutputs()?['body/RequestID']}\nAmount: IDR @{triggerOutputs()?['body/AmountIDR']}\nCost Center: @{triggerOutputs()?['body/CostCenterCode']}"
+                    }
+                  }
+                }
+              }
+            },
+            "Tier_2_Finance_Manager": {
+              "case": "Tier 2 (5M - 25M)",
+              "actions": {
+                "Start_Finance_Manager_Approval": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_approvals",
+                      "operationId": "CreateAnApproval",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+                    },
+                    "parameters": {
+                      "approvalType": "Basic",
+                      "title": "Approval Request: @{triggerOutputs()?['body/Title']} [Tier 2 - Finance Mgr]",
+                      "assignedTo": "finance.manager@enterprise.com",
+                      "details": "Document ID: @{triggerOutputs()?['body/RequestID']}\nAmount: IDR @{triggerOutputs()?['body/AmountIDR']}"
+                    }
+                  }
+                }
+              }
+            },
+            "Tier_3_CFO_Executive": {
+              "case": "Tier 3 (> 25M)",
+              "actions": {
+                "Start_CFO_Executive_Approval": {
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_approvals",
+                      "operationId": "CreateAnApproval",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_approvals"
+                    },
+                    "parameters": {
+                      "approvalType": "Basic",
+                      "title": "HIGH VALUE: @{triggerOutputs()?['body/Title']} [Tier 3 - CFO Executive]",
+                      "assignedTo": "cfo@enterprise.com",
+                      "details": "Executive capital expenditure approval required.\nDocument ID: @{triggerOutputs()?['body/RequestID']}\nAmount: IDR @{triggerOutputs()?['body/AmountIDR']}"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "actions": {
+          "Reject_Incomplete_Submission": {
+            "type": "OpenApiConnection",
+            "inputs": {
+              "host": {
+                "connectionName": "shared_sharepointonline",
+                "operationId": "PatchItem",
+                "apiId": "/providers/Microsoft.PowerApps/apis/shared_sharepointonline"
+              },
+              "parameters": {
+                "dataset": "https://enterprise.sharepoint.com/sites/FinanceHub",
+                "table": "FinanceRequests",
+                "id": "@triggerOutputs()?['body/ID']",
+                "item/Status": "Rejected",
+                "item/IsIncomplete": true
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

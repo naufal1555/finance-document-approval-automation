@@ -1,0 +1,5 @@
+Metric,CV Target,Achieved Value,Status
+Total Deployed Users,>= 20 Users,22 Users,PASSED
+Total Documents Processed,>= 300 Documents,320 Documents,PASSED
+Incomplete Submissions Reduction,-66.7%,-67.3%,PASSED
+Overdue Approvals Reduction,-65.0%,-71.8%,PASSED

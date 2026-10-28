@@ -1,0 +1,23 @@
+UserID,Name,Email,Department,Role
+USR-001,Ahmad Fathin Naufal,ahmad.fathin@enterprise.com,Engineering,System Developer
+USR-002,Budi Santoso,budi.santoso@enterprise.com,Engineering,DevOps Engineer
+USR-003,Dewi Lestari,dewi.lestari@enterprise.com,Operations,Supply Chain Analyst
+USR-004,Eko Prasetyo,eko.prasetyo@enterprise.com,Operations,Site Lead
+USR-005,Fajar Nugroho,fajar.nugroho@enterprise.com,Sales & Marketing,Account Executive
+USR-006,Gita Savitri,gita.savitri@enterprise.com,Sales & Marketing,Brand Specialist
+USR-007,Hendra Gunawan,hendra.gunawan@enterprise.com,Human Resources,Talent Acquisition
+USR-008,Indah Permata,indah.permata@enterprise.com,Human Resources,People Operations
+USR-009,Joko Widodo,joko.widodo@enterprise.com,Finance & Accounting,Financial Analyst
+USR-010,Kurnia Mega,kurnia.mega@enterprise.com,Finance & Accounting,Tax Accountant
+USR-011,Larasati Putri,larasati.putri@enterprise.com,Engineering,QA Engineer
+USR-012,Mega Utami,mega.utami@enterprise.com,Engineering,Backend Developer
+USR-013,Nanda Pratama,nanda.pratama@enterprise.com,Operations,Inventory Controller
+USR-014,Oki Setiawan,oki.setiawan@enterprise.com,Operations,Logistics Coordinator
+USR-015,Putri Anggraini,putri.anggraini@enterprise.com,Sales & Marketing,Growth Marketing
+USR-016,Rizky Ramadhan,rizky.ramadhan@enterprise.com,Sales & Marketing,Media Planner
+USR-017,Surya Saputra,surya.saputra@enterprise.com,Human Resources,Compensation & Benefit
+USR-018,Teguh Prasetyo,teguh.prasetyo@enterprise.com,Human Resources,HR Generalist
+USR-019,Umar Wirahadi,umar.wirahadi@enterprise.com,Finance & Accounting,Accounts Payable Specialist
+USR-020,Vina Panduwinata,vina.panduwinata@enterprise.com,Finance & Accounting,Budget Controller
+USR-021,Wahyu Hidayat,wahyu.hidayat@enterprise.com,Engineering,Cloud Architect
+USR-022,Yuliana Safitri,yuliana.safitri@enterprise.com,Finance & Accounting,Finance Manager

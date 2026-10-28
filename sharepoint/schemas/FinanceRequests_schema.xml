@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="http://www.opengis.net/ows" Title="FinanceRequests" Url="Lists/FinanceRequests" BaseType="0">
+  <MetaData>
+    <Fields>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000001}" Type="Text" Name="RequestID" DisplayName="Request ID" Required="TRUE" Indexed="TRUE" MaxLength="32" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000002}" Type="Text" Name="Title" DisplayName="Document Subject" Required="TRUE" MaxLength="255" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000003}" Type="Choice" Name="DocumentType" DisplayName="Document Type" Required="TRUE">
+        <CHOICES>
+          <CHOICE>Expense Reimbursement</CHOICE>
+          <CHOICE>Purchase Order</CHOICE>
+          <CHOICE>Vendor Invoice</CHOICE>
+          <CHOICE>Capital Expenditure</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000004}" Type="Text" Name="RequesterName" DisplayName="Requester Name" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000005}" Type="Text" Name="RequesterEmail" DisplayName="Requester Email" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000006}" Type="Choice" Name="Department" DisplayName="Department" Required="TRUE">
+        <CHOICES>
+          <CHOICE>Engineering</CHOICE>
+          <CHOICE>Operations</CHOICE>
+          <CHOICE>Sales &amp; Marketing</CHOICE>
+          <CHOICE>Human Resources</CHOICE>
+          <CHOICE>Finance &amp; Accounting</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000007}" Type="Text" Name="CostCenterCode" DisplayName="Cost Center Code" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000008}" Type="Currency" Name="AmountIDR" DisplayName="Amount (IDR)" Decimals="2" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000009}" Type="Choice" Name="ApprovalTier" DisplayName="Approval Tier" Required="TRUE">
+        <CHOICES>
+          <CHOICE>Tier 1 (&lt;= 5M)</CHOICE>
+          <CHOICE>Tier 2 (5M - 25M)</CHOICE>
+          <CHOICE>Tier 3 (&gt; 25M)</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000010}" Type="Choice" Name="Status" DisplayName="Workflow Status" Required="TRUE">
+        <CHOICES>
+          <CHOICE>Draft</CHOICE>
+          <CHOICE>Pending Approval</CHOICE>
+          <CHOICE>Approved</CHOICE>
+          <CHOICE>Rejected</CHOICE>
+          <CHOICE>Escalated Overdue</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000011}" Type="DateTime" Name="SubmissionDate" DisplayName="Submission Date" Format="DateTime" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000012}" Type="DateTime" Name="DueDate" DisplayName="SLA Due Date" Format="DateTime" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000013}" Type="Boolean" Name="IsOverdue" DisplayName="Is Overdue" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000014}" Type="Boolean" Name="IsIncomplete" DisplayName="Incomplete Submission Attempt" />
+    </Fields>
+  </MetaData>
+</List>

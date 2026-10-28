@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<List xmlns:ows="http://www.opengis.net/ows" Title="ApprovalAuditLog" Url="Lists/ApprovalAuditLog" BaseType="0">
+  <MetaData>
+    <Fields>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000021}" Type="Text" Name="LogID" DisplayName="Audit Log ID" Required="TRUE" Indexed="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000022}" Type="Text" Name="RequestID" DisplayName="Request ID" Required="TRUE" Indexed="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000023}" Type="Text" Name="ApproverEmail" DisplayName="Approver Email" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000024}" Type="Text" Name="ApproverName" DisplayName="Approver Name" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000025}" Type="Choice" Name="Decision" DisplayName="Decision" Required="TRUE">
+        <CHOICES>
+          <CHOICE>Approved</CHOICE>
+          <CHOICE>Rejected</CHOICE>
+          <CHOICE>Reassigned</CHOICE>
+          <CHOICE>Escalated</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000026}" Type="Text" Name="ApprovalStage" DisplayName="Approval Stage" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000027}" Type="DateTime" Name="AssignedTimestamp" DisplayName="Assigned Time" Format="DateTime" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000028}" Type="DateTime" Name="ActionTimestamp" DisplayName="Action Time" Format="DateTime" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000029}" Type="Number" Name="TurnaroundHours" DisplayName="Turnaround (Hours)" Decimals="2" Required="TRUE" />
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000030}" Type="Choice" Name="SLAComplianceStatus" DisplayName="SLA Compliance" Required="TRUE">
+        <CHOICES>
+          <CHOICE>WITHIN_SLA</CHOICE>
+          <CHOICE>BREACHED_SLA</CHOICE>
+        </CHOICES>
+      </Field>
+      <Field ID="{c2e68f30-8041-47c3-bb66-000000000031}" Type="Note" Name="Comments" DisplayName="Approver Remarks" NumLines="3" />
+    </Fields>
+  </MetaData>
+</List>
